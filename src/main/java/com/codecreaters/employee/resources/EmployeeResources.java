@@ -35,9 +35,6 @@ public class EmployeeResources {
                     .stream()
                     .map(user -> modelMapper.map(user, EmployeeDto.class))
                     .collect(Collectors.toList());
-//            for (int i = 0; i < emp.size(); i++) {
-//                empDto.add(modelMapper.map(emp.get(i), EmployeeDto.class));
-//            }
         } catch (Exception e) {
             log.debug("Exception");
             e.printStackTrace();

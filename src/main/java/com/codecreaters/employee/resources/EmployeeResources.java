@@ -4,8 +4,9 @@ import com.codecreaters.employee.dto.EmployeeDto;
 import com.codecreaters.employee.exception.EmployeeException;
 import com.codecreaters.employee.model.Employee;
 import com.codecreaters.employee.service.EmployeeService;
-import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,9 +17,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@Slf4j
 @RequestMapping("/employee")
 public class EmployeeResources {
+    private static final Logger log = LoggerFactory.getLogger(EmployeeResources.class.getName());
 
     @Autowired
     EmployeeService empSer;
@@ -27,6 +28,7 @@ public class EmployeeResources {
 
     @RequestMapping(value = "", method = RequestMethod.GET)
     public List<EmployeeDto> getEmployee() {
+        log.info("Get Request came successful");
         List<Employee> emp = new ArrayList<Employee>();
         List<EmployeeDto> empDto = new ArrayList<EmployeeDto>();
         try {
@@ -36,7 +38,7 @@ public class EmployeeResources {
                     .map(user -> modelMapper.map(user, EmployeeDto.class))
                     .collect(Collectors.toList());
         } catch (Exception e) {
-            log.debug("Exception");
+            log.error("Exception"+e.getMessage());
             e.printStackTrace();
             throw new EmployeeException(
                     e.getMessage());
@@ -45,7 +47,9 @@ public class EmployeeResources {
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+
     public ResponseEntity<?> getEmployeeById(@PathVariable("id") int id) {
+        log.info("Get Request came successful for id" + id);
         Employee emp;
         EmployeeDto empDto = new EmployeeDto();
         try {
@@ -67,6 +71,7 @@ public class EmployeeResources {
 
     @RequestMapping(value = "", method = RequestMethod.POST)
     public ResponseEntity<?> createEmployee(@RequestBody List<Employee> emp) {
+        log.info("Post Request came successful");
         Employee emplo = null;
         List<EmployeeDto> empDto = new ArrayList<EmployeeDto>();
         try {
